@@ -26,7 +26,8 @@ def run():
         names.append(feature[1])
         encodings.append(str2ndarray(feature[2]))
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture('images/test.mp4')
+    # cap = cv2.VideoCapture(0)
 
     count = 0
     while True:

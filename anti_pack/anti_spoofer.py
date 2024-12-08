@@ -13,8 +13,8 @@ import numpy as np
 import torch
 from torch import nn
 
-from static_anti.model import MiniFASNetV1, MiniFASNetV2, MiniFASNetV1SE, MiniFASNetV2SE
-from static_anti.utils import parse_model_name, get_kernel, to_tensor
+from anti_pack.model import MiniFASNetV1, MiniFASNetV2, MiniFASNetV1SE, MiniFASNetV2SE
+from anti_pack.utils import parse_model_name, get_kernel, to_tensor
 
 MODEL_MAPPING = {
     'MiniFASNetV1': MiniFASNetV1,

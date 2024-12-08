@@ -4,9 +4,9 @@ from time import time
 import cv2
 import numpy as np
 
-from static_anti.anti_spoofer import AntiSpoofer
-from static_anti.crop import CropImage
-from static_anti.utils import parse_model_name
+from anti_pack.anti_spoofer import AntiSpoofer
+from anti_pack.crop import CropImage
+from anti_pack.utils import parse_model_name
 
 
 def static_detect(

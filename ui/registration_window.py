@@ -1,3 +1,5 @@
+from typing import Union
+
 import cv2
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QImage, QPixmap
@@ -11,7 +13,7 @@ class RegistrationWindow(QWidget):
 
         self.display_label = ImageLabel()
         self.button = QPushButton('start')
-        self.button.clicked.connect(self.open_camera)
+        self.button.clicked.connect(lambda: self.open_camera('images/test.mp4'))
 
         layout = QHBoxLayout()
         layout.setSpacing(100)
@@ -21,13 +23,13 @@ class RegistrationWindow(QWidget):
 
         self.setLayout(layout)
 
-    def open_camera(self, camera_id=0):
-        cap = cv2.VideoCapture(camera_id)
+    def open_camera(self, source: Union[int ,str]):
+        cap = cv2.VideoCapture(source)
 
-        # while True:
-        ret, frame = cap.read()
-        self.display_label.setUMat(frame)
-        cv2.waitKey(1)
+        while True:
+            ret, frame = cap.read()
+            self.display_label.setUMat(frame)
+            cv2.waitKey(1)
 
 
 class ImageLabel(QLabel):
@@ -35,19 +37,12 @@ class ImageLabel(QLabel):
         super().__init__()
 
         self.umat = None
-        self.o_umat = None
-        self.o_width = 200
-        self.o_height = 100
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.pixmap = QPixmap().scaled(self.size(), Qt.AspectRatioMode.IgnoreAspectRatio)
         self.setPixmap(self.pixmap)
 
-    def setUMat(self, umat, change_o=False):
+    def setUMat(self, umat):
         self.umat = umat
-        if change_o:
-            self.o_umat = umat.copy()
-            self.o_width = umat.shape[1]
-            self.o_height = umat.shape[0]
         img_rgb = cv2.cvtColor(umat, cv2.COLOR_BGR2RGB)
         h, w, ch = img_rgb.shape
         bytes_per_line = ch * w
@@ -55,11 +50,10 @@ class ImageLabel(QLabel):
         self.pixmap = QPixmap.fromImage(qimg).scaled(self.size(), Qt.AspectRatioMode.IgnoreAspectRatio)
         self.setPixmap(self.pixmap)
 
-    def resizeEvent(self, event):
-        if not self.pixmap.isNull():
-            self.umat = cv2.resize(self.umat, [self.size().width(), self.size().height()])
-            self.o_umat = cv2.resize(self.o_umat, [self.size().width(), self.size().height()])
-            self.setUMat(self.umat)
-
-        super().resizeEvent(event)
+    # def resizeEvent(self, event):
+    #     if not self.pixmap.isNull():
+    #         self.umat = cv2.resize(self.umat, [self.size().width(), self.size().height()])
+    #         self.setUMat(self.umat)
+    #
+    #     super().resizeEvent(event)
 

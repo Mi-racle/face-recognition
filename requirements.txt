@@ -1,5 +1,5 @@
 deepface
-numpy
+numpy == 1.22.4
 mysql-connector-python == 9.0.0
 opencv-python
 pillow
