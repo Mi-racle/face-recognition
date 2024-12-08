@@ -1,0 +1,9 @@
+deepface
+numpy
+mysql-connector-python == 9.0.0
+opencv-python
+pillow
+pyqt6
+tf-keras
+torch
+torchvision
