@@ -1,6 +1,7 @@
 import ctypes
 
 from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout, QWidget, QTabWidget, QTextEdit
+from typing_extensions import override
 
 from ui.recognition_window import RecognitionWindow
 from ui.registration_window import RegistrationWindow
@@ -32,3 +33,6 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.tab_widget)
         self.central_widget.setLayout(layout)
 
+    @override
+    def closeEvent(self, event):
+        self.registration_window.closeStream()

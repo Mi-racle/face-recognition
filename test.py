@@ -1,5 +1,5 @@
-import cv2
+aaa = []
+bbb = []
 
-cap = cv2.VideoCapture(0)
-while True:
-    ret, frame = cap.read()
+print(not 0)
+
