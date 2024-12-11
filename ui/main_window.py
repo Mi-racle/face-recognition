@@ -28,11 +28,21 @@ class MainWindow(QMainWindow):
         self.tab_widget = QTabWidget()
         self.tab_widget.addTab(self.registration_window, '人脸注册')
         self.tab_widget.addTab(self.recognition_window, '人脸识别')
+        self.tab_widget.currentChanged.connect(self._on_current_tab_changed)
 
         layout = QVBoxLayout()
         layout.addWidget(self.tab_widget)
         self.central_widget.setLayout(layout)
 
+    def _on_current_tab_changed(self, index):
+        if index == 1:
+            self.registration_window.stream_button_signal.emit(str(index))
+        elif index == 0:
+            self.recognition_window.stream_button_signal.emit(str(index))
+
     @override
     def closeEvent(self, event):
-        self.registration_window.closeStream()
+        if self.tab_widget.currentIndex() == 0:
+            self.registration_window.close_stream()
+        elif self.tab_widget.currentIndex() == 1:
+            self.recognition_window.close_stream()

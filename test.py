@@ -1,5 +1,5 @@
-aaa = []
-bbb = []
+import cv2
 
-print(not 0)
+aaa = '3231'f'321'
 
+print(aaa)

@@ -11,16 +11,15 @@ from static_pack.utils import parse_model_name
 
 def static_detect(
         image_src,
-        image_bbox,
+        image_bbox=None,
         model_dir='models/anti_spoof_models',
         device_id=0
 ):
     model_test = AntiSpoofer(device_id)
     image_cropper = CropImage()
     image = cv2.imread(image_src) if type(image_src) is str else image_src
-    # image_bbox = model_test.get_bbox(image)  # [x, y, w, h]
+    image_bbox = model_test.get_bbox(image)  # [x, y, w, h]
     prediction = np.zeros((1, 3))
-    time_cost = 0
     # sum the prediction from single model's result
     for model_name in os.listdir(model_dir):
         h_input, w_input, model_type, scale = parse_model_name(model_name)
@@ -35,9 +34,7 @@ def static_detect(
         if scale is None:
             param['crop'] = False
         img = image_cropper.crop(**param)
-        st = time()
         prediction += model_test.predict(img, os.path.join(model_dir, model_name))
-        time_cost += time() - st
 
     # draw result of prediction
     label = np.argmax(prediction)
@@ -70,7 +67,7 @@ def static_detect(
     cv2.imwrite('runs/out.jpg', image)
 
     return {
+        'bbox': image_bbox,
         'real': real_flag,
-        'conf': conf,
-        'cost': time_cost,
+        # 'conf': conf
     }
